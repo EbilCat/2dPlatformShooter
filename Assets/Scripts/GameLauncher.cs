@@ -5,23 +5,19 @@ namespace Photon.Pun.Demo.PunBasics
 {
     public class GameLauncher : MonoBehaviourPunCallbacks
     {
-#region Private Fields
         [SerializeField] private byte maxPlayersPerRoom = 4;
         private bool isConnecting;
         private string gameVersion = "1";
 
-#endregion
 
-#region MonoBehaviour CallBacks
         private void Awake()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.GameVersion = this.gameVersion;
+            this.Connect();
         }
 
-#endregion
 
-#region Public Methods
         public void Connect()
         {
             isConnecting = true;
@@ -38,9 +34,7 @@ namespace Photon.Pun.Demo.PunBasics
             }
         }
 
-#endregion
 
-#region MonoBehaviourPunCallbacks CallBacks                
         public override void OnConnectedToMaster()
         {
             if (isConnecting)
@@ -74,12 +68,10 @@ namespace Photon.Pun.Demo.PunBasics
 
             if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
             {
-                Debug.Log("We load the 'Room for 1' ");
-                PhotonNetwork.LoadLevel("PunBasics-Room for 1");
+                Debug.Log("We load the 'GameLevel' ");
+                PhotonNetwork.LoadLevel("GameLevel");
 
             }
         }
-
-#endregion
     }
 }
