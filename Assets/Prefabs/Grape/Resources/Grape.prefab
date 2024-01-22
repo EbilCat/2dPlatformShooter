@@ -194,4 +194,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60b8e832eb16ea41975999f68f96830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePhotonView: {fileID: -1706037698983753023}

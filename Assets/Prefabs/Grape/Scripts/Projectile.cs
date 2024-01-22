@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
 {
+    private int sourceViewId = -1;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (this.photonView.IsMine)
@@ -10,12 +12,10 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             PhotonView otherPhotonView = collision.gameObject.GetComponent<PhotonView>();
             if (CollisionWithProjectileOwner(otherPhotonView)) { return; }
 
-            Debug.Log(collision.gameObject.name);
-
-            PlayerData playerHealth = collision.gameObject.GetComponent<PlayerData>();
-            if (playerHealth != null)
+            DamageHandler damageHandler = collision.gameObject.GetComponent<DamageHandler>();
+            if (damageHandler != null)
             {
-                playerHealth.TakeDamage(1);
+                damageHandler.TakeDamage(sourceViewId, 1);
             }
 
             PhotonNetwork.Destroy(this.gameObject);
@@ -25,7 +25,8 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] instantiationData = info.photonView.InstantiationData;
-        Vector3 velocity = (Vector3)instantiationData[0];
+        this.sourceViewId = (int)instantiationData[0];
+        Vector3 velocity = (Vector3)instantiationData[1];
         this.GetComponent<Rigidbody2D>().velocity = velocity;
     }
 

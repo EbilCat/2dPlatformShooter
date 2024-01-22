@@ -145,6 +145,8 @@ GameObject:
   - component: {fileID: 8788841690443125745}
   - component: {fileID: 6952221238904644541}
   - component: {fileID: -2823472305959859996}
+  - component: {fileID: 2569876648922844726}
+  - component: {fileID: 3055638222171697961}
   m_Layer: 0
   m_Name: Duck
   m_TagString: Untagged
@@ -261,13 +263,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecb1430de5d4a7e49b5f797671056cbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpVelocity: 10
+  jumpVelocity: 15
   movementSpeed: 5
   spriteRenderer: {fileID: 4435241657469726736}
   rigidBody: {fileID: 7581327461247005829}
   facingControl: {fileID: 952895907982353079}
-  isGrounded: 1
-  yVelocity: 0
 --- !u!114 &-2823472305959859996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,8 +282,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 2194681313756647963, guid: 017039c235b3e5a478895e3bc5df325a, type: 3}
   projectileEmitter: {fileID: 7648872576331622464}
-  projectileForce: 10
+  projectileForce: 15
   weaponFireInterval_Secs: 0.25
+--- !u!114 &2569876648922844726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126391768353071027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa59e829c90dd3143b8e37f3554d0ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3055638222171697961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126391768353071027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebd122153886da44ba216024ec3bf39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 4435241657469726736}
 --- !u!1 &7031122195708702899
 GameObject:
   m_ObjectHideFlags: 0

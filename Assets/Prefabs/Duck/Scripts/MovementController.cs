@@ -1,4 +1,3 @@
-using Photon.Pun;
 using UnityEngine;
 
 public class MovementController : MonoBehaviour
@@ -9,27 +8,25 @@ public class MovementController : MonoBehaviour
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Transform facingControl;
     private PlayerData playerData;
+    private Vector3 lastFramePos_World = Vector3.zero;
 
+
+//*====================
+//* UNITY
+//*====================
     private void Awake()
     {
-        this.rigidBody = this.GetComponent<Rigidbody2D>();
         this.playerData = this.GetComponent<PlayerData>();
+        this.rigidBody = this.GetComponent<Rigidbody2D>();
+        this.lastFramePos_World = this.transform.position;
     }
-
-    [SerializeField] bool isGrounded = true;
 
     private void FixedUpdate()
     {
-        if (this.GetComponent<PhotonView>().IsMine)
+        if (this.playerData.IsLocalPlayer)
         {
             float yVelocity = GetYVelocity();
             float xVelocity = GetXVelocity();
-
-            if (Mathf.Abs(xVelocity) > 0)
-            {
-                // this.spriteRenderer.flipX = xVelocity > 0.0f;
-                this.facingControl.localScale = new Vector3((xVelocity > 0.0f) ? 1.0f: -1.0f, 1.0f, 1.0f);
-            }
 
             this.rigidBody.velocity = new Vector2(xVelocity, yVelocity);
         }
@@ -37,16 +34,19 @@ public class MovementController : MonoBehaviour
         {
             this.rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
         }
+        ProcessCharacterFacing();
     }
 
-    [SerializeField] float yVelocity = 0.0f;
 
+//*====================
+//* PRIVATE
+//*====================
     private float GetYVelocity()
     {
-        yVelocity = this.rigidBody.velocity.y;
+        float yVelocity = this.rigidBody.velocity.y;
         bool isGrounded = Physics2D.Raycast(this.transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground"));
 
-        if (isGrounded)
+        if (isGrounded && this.playerData.IsDead == false)
         {
             if (Input.GetKey(KeyCode.Space))
             {
@@ -65,8 +65,22 @@ public class MovementController : MonoBehaviour
     private float GetXVelocity()
     {
         float xVelocity = 0.0f;
-        xVelocity += (Input.GetKey(KeyCode.D)) ? movementSpeed : 0.0f;
-        xVelocity += (Input.GetKey(KeyCode.A)) ? -movementSpeed : 0.0f;
+
+        if (this.playerData.IsDead == false)
+        {
+            xVelocity += (Input.GetKey(KeyCode.D)) ? movementSpeed : 0.0f;
+            xVelocity += (Input.GetKey(KeyCode.A)) ? -movementSpeed : 0.0f;
+        }
         return xVelocity;
+    }
+
+    private void ProcessCharacterFacing()
+    {
+        float xDelta = this.transform.position.x - lastFramePos_World.x;
+        if (Mathf.Abs(xDelta) > 0.05f)
+        {
+            this.facingControl.localScale = new Vector3((xDelta > 0.0f) ? 1.0f : -1.0f, 1.0f, 1.0f);
+            this.lastFramePos_World = this.transform.position;
+        }
     }
 }

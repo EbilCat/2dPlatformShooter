@@ -12,12 +12,12 @@ public class HealthIndicator : MonoBehaviour
 //*====================
     private void Awake()
     {
-        this.playerData.OnHealthChanged += OnHealthChanged;
+        this.playerData.RegisterForHealthChanged(OnHealthChanged);
     }
 
     private void OnDestroy()
     {
-        this.playerData.OnHealthChanged -= OnHealthChanged;
+        this.playerData.UnregisterFromHealthChanged(OnHealthChanged);
     }
 
 
