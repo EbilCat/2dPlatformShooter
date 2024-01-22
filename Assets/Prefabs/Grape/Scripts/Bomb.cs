@@ -1,7 +1,7 @@
 using Photon.Pun;
 using UnityEngine;
 
-public class Projectile : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
+public class Bomb : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
 {
     private int sourceViewId = -1;
 
@@ -15,6 +15,10 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        int groundMask = LayerMask.NameToLayer("Ground");
+
+        if (collision.gameObject.layer == groundMask) { return; }
+
         if (this.photonView.IsMine)
         {
             PhotonView otherPhotonView = collision.gameObject.GetComponent<PhotonView>();
@@ -23,7 +27,7 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             DamageHandler damageHandler = collision.gameObject.GetComponent<DamageHandler>();
             if (damageHandler != null)
             {
-                damageHandler.TakeDamage(sourceViewId, 1);
+                damageHandler.TakeDamage(sourceViewId, 5);
             }
 
             PhotonNetwork.Destroy(this.gameObject);

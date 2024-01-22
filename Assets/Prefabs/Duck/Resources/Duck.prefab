@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 8788841690443125745}
   - component: {fileID: 6952221238904644541}
   - component: {fileID: -2823472305959859996}
+  - component: {fileID: 3206164966810915618}
   - component: {fileID: 2569876648922844726}
   - component: {fileID: 3055638222171697961}
   - component: {fileID: 8066066562314384723}
@@ -290,6 +291,22 @@ MonoBehaviour:
   projectileEmitter: {fileID: 7648872576331622464}
   projectileForce: 15
   weaponFireInterval_Secs: 0.25
+--- !u!114 &3206164966810915618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4126391768353071027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bbd3f0400eb68d46886565d5439a5ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile: {fileID: 2194681313756647963, guid: bf98e95356e8afa4091f19463dc13579, type: 3}
+  projectileEmitter: {fileID: 7648872576331622464}
+  projectileForce: 5
+  weaponFireInterval_Secs: 1
 --- !u!114 &2569876648922844726
 MonoBehaviour:
   m_ObjectHideFlags: 0
