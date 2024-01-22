@@ -10,20 +10,35 @@ public class ScoreText : MonoBehaviour
     {
         this.text = this.GetComponent<TextMeshProUGUI>();
         this.playerData = playerData;
-        this.playerData.RegisterForPlayerNameChanged(OnPlayerNameChanged);
+        this.playerData.RegisterForPlayerNameChanged(OnPlayerNameChanged, false);
+        this.playerData.RegisterForPlayerScoreChanged(OnPlayerScoreChanged);
     }
 
     private void OnDestroy()
     {
         this.playerData?.UnregisterFromPlayerNameChanged(OnPlayerNameChanged);
+        this.playerData?.UnregisterFromPlayerScoreChanged(OnPlayerScoreChanged);
     }
-
 
 //*====================
 //* CALLBACKS
 //*====================    
     private void OnPlayerNameChanged(string obj)
     {
-        this.text.text = obj;
+        this.ReevaluateText();
+    }
+
+    private void OnPlayerScoreChanged(int obj)
+    {
+        this.ReevaluateText();
+    }
+
+
+//*====================
+//* PRIVATE
+//*====================
+    private void ReevaluateText()
+    {
+        this.text.text = $"{this.playerData.PlayerName}: {this.playerData.PlayerScore}";
     }
 }

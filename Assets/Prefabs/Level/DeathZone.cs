@@ -7,7 +7,8 @@ public class DeathZone : MonoBehaviour
         PlayerData playerData = collision.gameObject.GetComponent<PlayerData>();
         if(playerData != null && playerData.IsLocalPlayer)
         {
-            playerData.Health = 0;
+            DamageHandler damageHandler = playerData.GetComponent<DamageHandler>();
+            damageHandler.TakeDamage(-1, 100);
         }
     }
 }

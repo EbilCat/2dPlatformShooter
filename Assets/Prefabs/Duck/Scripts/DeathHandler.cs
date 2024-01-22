@@ -5,28 +5,26 @@ public class DeathHandler : MonoBehaviour
     private PlayerData playerData;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+
+//*====================
+//* UNITY
+//*====================
     private void Awake()
     {
         this.playerData = this.GetComponent<PlayerData>();
-        this.playerData.RegisterForHealthChanged(OnHealthChanged);
-        this.playerData.RegisterForIsDeadChanged(OnIsRespawningChanged);
+        this.playerData.RegisterForIsDeadChanged(OnIsDeadChanged);
     }
 
     private void OnDestroy()
     {
-        this.playerData?.UnregisterFromIsDeadChanged(OnIsRespawningChanged);
-        this.playerData?.UnregisterFromHealthChanged(OnHealthChanged);
+        this.playerData?.UnregisterFromIsDeadChanged(OnIsDeadChanged);
     }
 
-    private void OnHealthChanged(int obj)
-    {
-        if(obj <= 0)
-        {
-            this.playerData.IsDead = true;
-        }
-    }
 
-    private void OnIsRespawningChanged(bool obj)
+//*====================
+//* CALLBACKS
+//*====================
+    private void OnIsDeadChanged(bool obj)
     {
         this.spriteRenderer.flipY = obj;
     }

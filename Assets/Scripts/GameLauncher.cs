@@ -14,7 +14,6 @@ namespace Photon.Pun.Demo.PunBasics
         {
             PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.GameVersion = this.gameVersion;
-            this.Connect();
         }
 
 

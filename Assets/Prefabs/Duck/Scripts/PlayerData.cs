@@ -41,6 +41,32 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 
 
 //*====================
+//* PlayerScore
+//*====================
+    [SerializeField] private int playerScore = 0;
+    private event Action<int> OnPlayerScoreChanged;
+    public int PlayerScore
+    {
+        get => playerScore;
+        set
+        {
+            this.playerScore = value;
+            this.OnPlayerScoreChanged?.Invoke(playerScore);
+        }
+    }
+    public void RegisterForPlayerScoreChanged(Action<int> callback, bool fireCallback = true) 
+    { 
+        OnPlayerScoreChanged -= callback;
+        OnPlayerScoreChanged += callback;
+        if(fireCallback) { callback(playerScore); }
+    }
+    public void UnregisterFromPlayerScoreChanged(Action<int> callback) 
+    { 
+        OnPlayerScoreChanged -= callback;
+    }
+
+
+//*====================
 //* Health
 //*====================
     [SerializeField] private int currentHealth = 10;
@@ -112,7 +138,10 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     public override void OnDisable()
     {
         base.OnDisable();
-        LocalPlayer = null;
+        if(this.photonView.IsMine == true)
+        {
+            LocalPlayer = null;
+        }
         allPlayers.Remove(this);
         OnPlayerRemoved?.Invoke(this);
     }
@@ -127,11 +156,13 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(Health);
             stream.SendNext(IsDead);
+            stream.SendNext(PlayerScore);
         }
         else
         {
             this.Health = (int)stream.ReceiveNext();
             this.IsDead = (bool)stream.ReceiveNext();
+            this.PlayerScore = (int)stream.ReceiveNext();
         }
     }
 }

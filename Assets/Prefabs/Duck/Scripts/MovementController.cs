@@ -44,7 +44,7 @@ public class MovementController : MonoBehaviour
     private float GetYVelocity()
     {
         float yVelocity = this.rigidBody.velocity.y;
-        bool isGrounded = Physics2D.Raycast(this.transform.position, Vector2.down, 0.1f, LayerMask.GetMask("Ground"));
+        bool isGrounded = Physics2D.Raycast(this.transform.position, Vector2.down, 0.1f);//, LayerMask.GetMask("Ground"));
 
         if (isGrounded && this.playerData.IsDead == false)
         {
