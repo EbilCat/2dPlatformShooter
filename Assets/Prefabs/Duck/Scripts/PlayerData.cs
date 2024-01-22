@@ -12,22 +12,23 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 //*====================
 //* Health
 //*====================
-    [SerializeField] private int health = 10;
+    [SerializeField] private int currentHealth = 10;
+    public int maxHealth = 10;
     private event Action<int> OnHealthChanged;
     public int Health
     {
-        get => health;
+        get => currentHealth;
         set
         {
-            this.health = value;
-            this.OnHealthChanged?.Invoke(health);
+            this.currentHealth = value;
+            this.OnHealthChanged?.Invoke(currentHealth);
         }
     }
     public void RegisterForHealthChanged(Action<int> callback, bool fireCallback = true) 
     { 
         OnHealthChanged -= callback;
         OnHealthChanged += callback;
-        if(fireCallback) { callback(health); }
+        if(fireCallback) { callback(currentHealth); }
     }
     public void UnregisterFromHealthChanged(Action<int> callback) 
     { 

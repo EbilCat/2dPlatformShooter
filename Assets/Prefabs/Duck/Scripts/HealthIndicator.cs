@@ -1,10 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthIndicator : MonoBehaviour
 {
-    [SerializeField] private TextMeshPro text;
     [SerializeField] private PlayerData playerData;
+    [SerializeField] private TextMeshPro text;
+    [SerializeField] private Image healthBar;
 
 
 //*====================
@@ -27,5 +29,6 @@ public class HealthIndicator : MonoBehaviour
     private void OnHealthChanged(int obj)
     {
         text.text = obj.ToString(); 
+        healthBar.rectTransform.anchorMax = new Vector2((float)obj / (float)this.playerData.maxHealth, 1.0f);
     }
 }

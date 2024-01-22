@@ -35,6 +35,13 @@ public class DamageHandler : MonoBehaviour
     }
 
 
+    [ContextMenu("Damage")]
+    private void Damage()
+    {
+        this.playerData.Health--;
+    }
+
+
     [ContextMenu("Kill")]
     private void Kill()
     {
