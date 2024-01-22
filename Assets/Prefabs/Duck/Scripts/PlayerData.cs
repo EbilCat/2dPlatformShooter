@@ -1,12 +1,43 @@
 using System;
+using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
 public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 {
+    public static List<PlayerData> allPlayers = new List<PlayerData>();
+    public static event Action<PlayerData> OnPlayerAdded;
+    public static event Action<PlayerData> OnPlayerRemoved;
+
     public static PlayerData LocalPlayer { get; private set;}
     public int ViewId { get => this.photonView.ViewID; }
     public bool IsLocalPlayer { get => this.photonView.IsMine; }
+
+
+//*====================
+//* PlayerName
+//*====================
+    [SerializeField] private string playerName = "None";
+    private event Action<string> OnPlayerNameChanged;
+    public string PlayerName
+    {
+        get => playerName;
+        set
+        {
+            this.playerName = value;
+            this.OnPlayerNameChanged?.Invoke(playerName);
+        }
+    }
+    public void RegisterForPlayerNameChanged(Action<string> callback, bool fireCallback = true) 
+    { 
+        OnPlayerNameChanged -= callback;
+        OnPlayerNameChanged += callback;
+        if(fireCallback) { callback(playerName); }
+    }
+    public void UnregisterFromPlayerNameChanged(Action<string> callback) 
+    { 
+        OnPlayerNameChanged -= callback;
+    }
 
 
 //*====================
@@ -69,16 +100,21 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     {
         base.OnEnable();
         this.gameObject.name = $"Player {this.photonView.ViewID.ToString()}";
+        this.PlayerName = this.gameObject.name;
         if(this.photonView.IsMine == true)
         {
             LocalPlayer = this;
         }
+        allPlayers.Add(this);
+        OnPlayerAdded?.Invoke(this);
     }
 
     public override void OnDisable()
     {
         base.OnDisable();
         LocalPlayer = null;
+        allPlayers.Remove(this);
+        OnPlayerRemoved?.Invoke(this);
     }
 
 
